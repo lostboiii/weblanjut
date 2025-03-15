@@ -76,4 +76,4 @@ Route::resource('photos', PhotoController::class)->except([
    ]);
    
 Route::get('/greeting', [WelcomeController::class,'greeting']);
-    
+
