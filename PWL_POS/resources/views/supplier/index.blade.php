@@ -5,7 +5,7 @@
     <div class="card-header">
         <h3 class="card-title">{{ $page->title }}</h3>
         <div class="card-tools">
-            <a href="{{ url('level/create') }}" class="btn btn-primary btn-sm">Tambah</a>
+            <a href="{{ url('supplier/create') }}" class="btn btn-primary btn-sm">Tambah</a>
         </div>
     </div>
     <div class="card-body">
@@ -15,12 +15,14 @@
         @if (session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
-        <table class="table table-bordered table-striped table-hover table-sm" id="table_level">
+
+        <table class="table table-bordered table-striped table-hover table-sm" id="table_supplier">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Kode Level</th>
-                    <th>Nama Level</th>
+                    <th>Nama Supplier</th>
+                    <th>Kontak Supplier</th>
+                    <th>Alamat Supplier</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -29,22 +31,18 @@
 </div>
 @endsection
 
-@push('css')
-@endpush
-
 @push('js')
 <script>
 $(function () {
-    $('#table_level').DataTable({
+    $('#table_supplier').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ url('level/list') }}",
-        pageLength: 10,
-        deferRender: true, 
+        ajax: "{{ url('supplier/list') }}",
         columns: [
-            {data: 'level_id', name: 'level_id'},
-            {data: 'level_kode', name: 'level_kode'},
-            {data: 'level_nama', name: 'level_nama'},
+            {data: 'supplier_id', name: 'supplier_id'},
+            {data: 'supplier_nama', name: 'supplier_nama'},
+            {data: 'supplier_kontak', name: 'supplier_kontak'},
+            {data: 'supplier_alamat', name: 'supplier_alamat'},
             {data: 'aksi', name: 'aksi', orderable: false, searchable: false}
         ]
     });

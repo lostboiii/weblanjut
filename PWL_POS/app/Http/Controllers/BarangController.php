@@ -89,6 +89,7 @@ class BarangController extends Controller
     public function edit(string $id)
     {
         $barang = BarangModel::find($id);
+        $kategoris  = KategoriModel::all();
         
         $breadcrumb = (object) [
             'title' => 'Edit Barang',
@@ -105,15 +106,16 @@ class BarangController extends Controller
             'breadcrumb' => $breadcrumb, 
             'page' => $page, 
             'barang' => $barang, 
-            'activeMenu' => $activeMenu
+            'activeMenu' => $activeMenu,
+            'kategoris' => $kategoris
         ]);
     }
 
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'kode_barang' => 'required|string|max:10|unique:m_barang,kode_barang,'.$id.',barang_id',
-            'nama_barang' => 'required|string|max:100',
+            'barang_kode' => 'required|string|max:10|unique:m_barang,barang_kode,'.$id.',barang_id',
+            'barang_nama' => 'required|string|max:100',
             'harga_jual' => 'required|numeric',
             'harga_beli' => 'required|numeric',
             'kategori_id' => 'required|integer'
@@ -125,8 +127,8 @@ class BarangController extends Controller
         }
 
         $barang->update([
-            'kode_barang' => $request->kode_barang,
-            'nama_barang' => $request->nama_barang,
+            'barang_kode' => $request->barang_kode,
+            'barang_nama' => $request->barang_nama,
             'harga_jual' => $request->harga_jual,
             'harga_beli' => $request->harga_beli,
             'kategori_id' => $request->kategori_id,

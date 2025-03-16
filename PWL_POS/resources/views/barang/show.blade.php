@@ -19,11 +19,11 @@
                 </tr>
                 <tr>
                     <th>Kode Barang</th>
-                    <td>{{ $barang->kode_barang }}</td>
+                    <td>{{ $barang->barang_kode }}</td>
                 </tr>
                 <tr>
                     <th>Nama Barang</th>
-                    <td>{{ $barang->nama_barang }}</td>
+                    <td>{{ $barang->barang_nama }}</td>
                 </tr>
             </table>
         @endempty
