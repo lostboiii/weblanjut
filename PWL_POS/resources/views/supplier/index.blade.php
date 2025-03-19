@@ -6,6 +6,7 @@
         <h3 class="card-title">{{ $page->title }}</h3>
         <div class="card-tools">
             <a href="{{ url('supplier/create') }}" class="btn btn-primary btn-sm">Tambah</a>
+            <button type="button" onclick="modalAction('{{ url('/supplier/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah Ajax</button>
         </div>
     </div>
     <div class="card-body">
@@ -29,10 +30,16 @@
         </table>
     </div>
 </div>
+<div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" data-width="75%" aria-hidden="true"></div>
 @endsection
 
 @push('js')
-<script>
+<script>  
+   function modalAction(url = ''){
+    $('#myModal').load(url,function(){
+        $('#myModal').modal('show');
+    });
+}
 $(function () {
     $('#table_supplier').DataTable({
         processing: true,
@@ -46,6 +53,12 @@ $(function () {
             {data: 'aksi', name: 'aksi', orderable: false, searchable: false}
         ]
     });
+});
+$('#level_id').on('change', function() {
+        table.column(3).search($(this).find('option:selected').text()).draw();
+    });
+$('#myModal').on('show.bs.modal', function () {
+    console.log('Modal is about to be shown');
 });
 </script>
 @endpush
