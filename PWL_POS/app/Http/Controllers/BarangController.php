@@ -172,7 +172,8 @@ class BarangController extends Controller
     }
     public function create_ajax()
     {
-        return view('barang.create_ajax');
+        $kategoris = KategoriModel::all();
+        return view('barang.create_ajax', ['kategoris' => $kategoris]);
     }
     public function store_ajax(Request $request)
     {
@@ -209,8 +210,8 @@ class BarangController extends Controller
     public function edit_ajax(string $id)
     {
         $barang = BarangModel::find($id);
-    
-        return view('barang.edit_ajax', ['barang' => $barang]);
+        $kategoris = KategoriModel::all();
+        return view('barang.edit_ajax', ['barang' => $barang, 'kategoris' => $kategoris]);
     }
     public function update_ajax(Request $request, $id){
         // Check if the request is from ajax

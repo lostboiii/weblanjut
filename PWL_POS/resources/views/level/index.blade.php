@@ -59,8 +59,5 @@ $(function () {
         table.column(3).search($(this).find('option:selected').text()).draw();
     });
 });
-$('#myModal').on('show.bs.modal', function () {
-    console.log('Modal is about to be shown');
-});
 </script>
 @endpush
