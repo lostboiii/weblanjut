@@ -5,8 +5,10 @@
     <div class="card-header">
         <h3 class="card-title">{{ $page->title }}</h3>
         <div class="card-tools">
-            <a href="{{ url('barang/create') }}" class="btn btn-primary btn-sm">Tambah</a>
-            <button type="button" onclick="modalAction('{{ url('/barang/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah Ajax</button>
+            <button onclick="modalAction('{{ url('/barang/import') }}')" class="btn btn-info">Import Barang</button>
+            <a href="{{ url('/barang/export_excel') }}" class="btn btn-primary"><i class="fa fa-fileexcel"></i> Export Barang</a>
+            <button onclick="modalAction('{{ url('/barang/create_ajax') }}')" class="btn btn-success">Tambah Data (Ajax)</button>
+            <a href="{{ url('/barang/export_pdf') }}" class="btn btn-warning"><i class="fa fa-filepdf"></i> Export Barang</a>
         </div>
     </div>
     <div class="card-body">
@@ -42,6 +44,7 @@
                     <th>Nama Barang</th>
                     <th>Harga Jual</th>
                     <th>Harga Beli</th>
+                    <th>Kategori</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -55,38 +58,44 @@
 @push('js')
 <script>
     function modalAction(url = ''){
-    $('#myModal').load(url,function(){
-        $('#myModal').modal('show');
-    });
-}
-$(function () {
-    var table = $('#table_barang').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: {
-            url: "{{ url('barang/list') }}",
-            data: function (d) {
-                d.kategori_id = $('#kategori_id').val();
+        $('#myModal').load(url, function(){
+            $('#myModal').modal('show');
+        });
+    }
+
+    $(function () {
+        var table = $('#table_barang').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ url('barang/list') }}",
+                data: function (d) {
+                    d.kategori_id = $('#kategori_id').val();
+                }
+            },
+            columns: [
+                {data: 'barang_id', name: 'barang_id', className: "text-center", width: "5%"},
+                {data: 'barang_kode', name: 'barang_kode', className: "text-center", width: "15%"},
+                {data: 'barang_nama', name: 'barang_nama',width: "20%"},
+                {data: 'harga_jual', name: 'harga_jual', className: "text-right", width: "15%"},
+                {data: 'harga_beli', name: 'harga_beli', className: "text-right", width: "15%"},
+                {data: "kategori.kategori_nama", className: "text-center", width: "10%", orderable: true,searchable: false},
+                {data: 'aksi', name: 'aksi', orderable: false, searchable: false}
+            ]
+        });
+        $('#table_barang_filter input').on('keyup', function(e) {
+            if (e.keyCode == 13) { // enter key
+                table.draw();
             }
-        },
-        columns: [
-            {data: 'barang_id', name: 'barang_id'},
-            {data: 'barang_kode', name: 'barang_kode'},
-            {data: 'barang_nama', name: 'barang_nama'},
-            {data: 'harga_jual', name: 'harga_jual'},
-            {data: 'harga_beli', name: 'harga_beli'},
-            {data: 'aksi', name: 'aksi', orderable: false, searchable: false}
-        ]
+        });
+
+        $('#kategori_id').on('change', function() {
+            table.draw(); 
+        });
     });
 
- 
-    $('#kategori_id').on('change', function() {
-        table.draw(); 
+    $('#myModal').on('show.bs.modal', function () {
+        console.log('Modal is about to be shown');
     });
-});
-
-$('#myModal').on('show.bs.modal', function () {
-    console.log('Modal is about to be shown');
-});
 </script>
 @endpush

@@ -14,29 +14,49 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
 </head>
-<body>
-    <div class="register-box">
-        <div class="register-logo">
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
             <a href="{{ url('/') }}"><b>Admin</b>LTE</a>
         </div>
         <div class="card">
-            <div class="card-body register-card-body">
+            <div class="card-body login-card-body">
                 <p class="login-box-msg">Register a new membership</p>
                 <form action="{{ url('register') }}" method="POST" id="form-register">
                     @csrf
                     <div class="input-group mb-3">
                         <input type="text" name="nama" class="form-control" placeholder="Full Name" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
                     </div>
                     <div class="input-group mb-3">
                         <input type="text" name="username" class="form-control" placeholder="Username" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
                         <small id="error-username" class="error-text text-danger"></small>
                     </div>
                     <div class="input-group mb-3">
                         <input type="password" name="password" class="form-control" placeholder="Password" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
                         <small id="error-password" class="error-text text-danger"></small>
                     </div>
                     <div class="input-group mb-3">
                         <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm Password" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-12">

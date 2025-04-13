@@ -6,6 +6,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\BarangController;
@@ -81,6 +82,10 @@ Route::middleware(['authorize:ADM,MNG'])->group(function () {
         Route::get('/{id}/edit', [BarangController::class, 'edit']);
         Route::put('/{id}', [BarangController::class, 'update']);
         Route::delete('/{id}', [BarangController::class, 'destroy']);
+        Route::get('/import', [BarangController::class,'import']);
+        Route::post('/import_ajax', [BarangController::class,'import_ajax']);
+        Route::get('/export_excel', [BarangController::class,'export_excel']);
+        Route::get('/export_pdf', [BarangController::class,'export_pdf']);
     });
     Route::prefix('kategori')->group(function () {
         Route::get('/create_ajax', [KategoriController::class, 'create_ajax']);
@@ -118,7 +123,10 @@ Route::middleware(['authorize:ADM,MNG'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [WelcomeController::class, 'index']);
 
-    
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
+        Route::post('/upload-image', [ProfileController::class, 'uploadImage'])->name('profile.upload-image');
+    });
     
 });
 

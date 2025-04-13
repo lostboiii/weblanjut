@@ -151,20 +151,20 @@
         <!--end::Fullscreen Toggle-->
         <!--begin::User Menu Dropdown-->
         <li class="nav-item dropdown user-menu">
-          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+          <a href="{{url('/profile')}}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
             <img
-              src="{{ asset('adminlte/dist/img/user2-160x160.jpg') }}"
+             src="{{ Auth::user()->foto ? asset('storage/profile/' . Auth::user()->foto) : asset('adminlte/dist/img/user2-160x160.jpg') }}"
               class="img-circle"
               alt="User Image"
               style="width: 25px; height: 25px;"
             />
-            <span class="d-none d-md-inline">Alexander Pierce</span>
+            <span class="d-none d-md-inline">{{Auth::user()->nama}}</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
             <!--begin::User Image-->
             <li class="user-header text-bg-primary">
               <img
-                src="{{ asset('adminlte/dist/img/user2-160x160.jpg') }}"
+               src="{{ Auth::user()->foto ? asset('storage/profile/' . Auth::user()->foto) : asset('adminlte/dist/img/user2-160x160.jpg') }}"
                 class="rounded-circle shadow"
                 alt="User Image"
               />
