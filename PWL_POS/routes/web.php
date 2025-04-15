@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
@@ -24,6 +25,7 @@ use Monolog\Level;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/', [UserController::class, 'index']);
 Route::pattern('id','[0-9]+');
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class,'postLogin']);
@@ -54,7 +56,6 @@ Route::middleware(['authorize:ADM'])->group(function () {
         Route::put('/{id}/update_ajax', [UserController::class, 'update_ajax']);
         Route::get('/{id}/delete_ajax', [UserController::class, 'confirm_ajax']);
         Route::delete('/{id}/delete_ajax', [UserController::class, 'delete_ajax']);
-        Route::get('/', [UserController::class, 'index']);
         Route::get('/list', [UserController::class, 'list']);
         Route::get('/create', [UserController::class, 'create']);
         Route::get('/{id}', [UserController::class, 'show']);

@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Laporan Data Barang</title>
+    <title>Export PDF Barang</title>
     <style>
         @media print {
             body {
@@ -61,6 +61,19 @@
                 object-fit: contain;
             }
         }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
@@ -86,38 +99,31 @@
         </table>
     </div>
 
-    <h3 class="report-title">LAPORAN DATA BARANG</h3>
-
-    <table class="data-table">
+    <h2 style="text-align: center;">Data Barang</h2>
+    <table>
         <thead>
             <tr>
-                <th class="text-center">No</th>
+                <th>ID</th>
                 <th>Kode Barang</th>
                 <th>Nama Barang</th>
-                <th class="text-right">Harga Beli</th>
-                <th class="text-right">Harga Jual</th>
+                <th>Harga Beli</th>
+                <th>Harga Jual</th>
                 <th>Kategori</th>
+                <th>Supplier</th>
             </tr>
         </thead>
         <tbody>
-            @forelse($barang as $b)
-                @php
-                    $hargaBeli = number_format($b->harga_beli, 0, ',', '.');
-                    $hargaJual = number_format($b->harga_jual, 0, ',', '.');
-                @endphp
-                <tr>
-                    <td class="text-center">{{ $loop->iteration }}</td>
-                    <td>{{ $b->barang_kode }}</td>
-                    <td>{{ $b->barang_nama }}</td>
-                    <td class="text-right currency">Rp{{ $hargaBeli }}</td>
-                    <td class="text-right currency">Rp{{ $hargaJual }}</td>
-                    <td>{{ $b->kategori->kategori_nama ?? 'N/A' }}</td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="6" class="text-center">Tidak ada data barang</td>
-                </tr>
-            @endforelse
+            @foreach($data as $item)
+            <tr>
+                <td>{{ $item->barang_id }}</td>
+                <td>{{ $item->barang_kode }}</td>
+                <td>{{ $item->barang_nama }}</td>
+                <td>{{ $item->harga_beli }}</td>
+                <td>{{ $item->harga_jual }}</td>
+                <td>{{ $item->kategori->kategori_nama }}</td>
+                <td>{{ $item->supplier->supplier_nama }}</td>
+            </tr>
+            @endforeach
         </tbody>
     </table>
 </body>

@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "fontawesome": "^5.6.3",
+    "icheck-bootstrap": "^3.0.1",
+    "jquery": "^3.7.1",
+    "sweetalert2": "^11.17.2"
+  }
+}

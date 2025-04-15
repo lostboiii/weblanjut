@@ -6,6 +6,9 @@ use App\Models\LevelModel;
 use Illuminate\Http\Request;
 use Validator;
 use Yajra\DataTables\DataTables;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class LevelController extends Controller
 {
@@ -236,6 +239,102 @@ public function delete_ajax(Request $request, string $id)
             return response()->json([
                 'status' => false,
                 'message' => 'Data tidak ditemukan'
+            ]);
+        }
+    }
+    return redirect('/');
+}
+
+public function export_excel()
+{
+    $levels = LevelModel::select('level_id', 'level_kode', 'level_nama')
+        ->orderBy('level_id')
+        ->get();
+    
+    $spreadsheet = new Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+    
+    // Set headers
+    $sheet->setCellValue('A1', 'No');
+    $sheet->setCellValue('B1', 'Kode Level');
+    $sheet->setCellValue('C1', 'Nama Level');
+
+    $sheet->getStyle('A1:C1')->getFont()->setBold(true);
+    // Populate data
+    $no = 1;
+    $row = 2;
+    foreach ($levels as $key => $value) {
+        $sheet->setCellValue('A'.$row, $no);
+        $sheet->setCellValue('B'.$row, $value->level_kode);
+        $sheet->setCellValue('C'.$row, $value->level_nama);
+        $row++;
+        $no++;
+    }
+    foreach(range('A','C') as $columnID) {
+        $sheet->getColumnDimension($columnID)->setAutoSize(true);
+    }
+    $sheet->setTitle('Data Level');
+    $writer = new Xlsx($spreadsheet);
+    $filename = 'data_level_'.date('Ymd_His').'.xlsx';
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment;filename="'.$filename.'"');
+    header('Cache-Control: max-age=0');
+    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+    header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+    header('Cache-Control: cache, must-revalidate');
+    header('Pragma: public');
+
+    $writer->save('php://output');
+    exit;
+}
+
+public function import()
+{
+    return view('level.import');
+}
+
+public function import_ajax(Request $request)
+{
+    if ($request->ajax() || $request->wantsJson()) {
+        $rules = [
+            'file_level' => ['required', 'mimes:xlsx', 'max:1024']
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validasi Gagal',
+                'msgField' => $validator->errors()
+            ]);
+        }
+        $file = $request->file('file_level');
+        $reader = IOFactory::createReader('Xlsx');
+        $reader->setReadDataOnly(true);
+        $spreadsheet = $reader->load($file->getRealPath());
+        $sheet = $spreadsheet->getActiveSheet();
+        $data = $sheet->toArray(null, false, true, true);
+        $insert = [];
+        if (count($data) > 1) {
+            foreach ($data as $baris => $value) {
+                if ($baris > 1) {
+                    $insert[] = [
+                        'level_kode' => $value['B'],
+                        'level_nama' => $value['C'],
+                        'created_at' => now(),
+                    ];
+                }
+            }
+            if (count($insert) > 0) {
+                LevelModel::insertOrIgnore($insert);
+            }
+            return response()->json([
+                'status' => true,
+                'message' => 'Data berhasil diimport'
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Tidak ada data yang diimport'
             ]);
         }
     }
