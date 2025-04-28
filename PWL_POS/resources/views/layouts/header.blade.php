@@ -164,7 +164,7 @@
             <!--begin::User Image-->
             <li class="user-header text-bg-primary">
               <img
-               src="{{ Auth::user()->foto ? asset('storage/profile/' . Auth::user()->foto) : asset('adminlte/dist/img/user2-160x160.jpg') }}"
+               src="{{ Auth::user()->foto ? asset('public/storage/profile/' . Auth::user()->foto) : asset('adminlte/dist/img/user2-160x160.jpg') }}"
                 class="rounded-circle shadow"
                 alt="User Image"
               />

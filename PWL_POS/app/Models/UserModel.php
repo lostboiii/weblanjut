@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,7 +18,7 @@ class UserModel extends Authenticatable implements JWTSubject
 
     protected $casts = ['password' => 'hashed'];
 
-    protected $fillable = ['level_id', 'username','nama','password','created_at','updated_at'];
+    protected $fillable = ['level_id', 'username','nama','password','created_at','updated_at','foto'];
     public function level(): BelongsTo{
         return $this->belongsTo(LevelModel::class, 'level_id', 'level_id');
     }
@@ -39,5 +39,10 @@ class UserModel extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+    public function fotos(): Attribute{
+        return Attribute::make(
+            get: fn ($foto) => url('public/storage/posts/'.$foto),
+        );
     }
 }

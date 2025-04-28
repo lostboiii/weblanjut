@@ -64,6 +64,7 @@ Route::middleware(['authorize:ADM'])->group(function () {
         Route::get('/{id}/edit', [UserController::class, 'edit']);
         Route::delete('/{id}', [UserController::class, 'destroy']);
         Route::post('/ajax', [UserController::class, 'store_ajax']);
+        Route::get('/', [UserController::class, 'index']);
     });
 
 });
@@ -123,7 +124,6 @@ Route::middleware(['authorize:ADM,MNG'])->group(function () {
 });
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [WelcomeController::class, 'index']);
-
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
         Route::post('/upload-image', [ProfileController::class, 'uploadImage'])->name('profile.upload-image');
